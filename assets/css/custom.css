@@ -1,0 +1,65 @@
+span.genres {
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+span.genres:last-of-type {
+    margin-left: 0;
+}
+
+span.language {
+    margin-bottom: 10px;
+}
+
+.display-shows > div, .display-people > div {
+    margin-bottom: 40px;
+}
+
+.display-people .view-details {
+    margin-top: 20px;
+}
+
+.summary {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    max-height: 75px; /* fallback */
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    max-height: 80px; /* fallback */
+    -webkit-line-clamp: 4; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+.image-block {
+    min-height: 295px;
+}
+
+ul.nav {
+    margin-bottom: 30px;
+}
+
+.search-wrapper {
+    margin-top: 100px;
+    min-height: 550px;
+}
+
+.info {
+    margin: 10px 0;
+}
+
+.info p {
+    margin: 0;
+    font-size: 12px;
+}
+
+span.genres + span.genres:before {
+    content: ", ";
+}

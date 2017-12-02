@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TVMaze - Instaveritas</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="/">TVMaze</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0 searchform" v-on:submit="perform_search">
+            <input class="form-control mr-sm-2" type="text" name="search_val"
+                   placeholder="Search for Shows &amp; People"
+                   aria-label="Search for Shows and people">
+            <button class="btn btn-outline-success my-2 my-sm-0">
+                Search
+            </button>
+        </form>
+    </div>
+</nav>
+
+<main role="main">
+
+    <div class="search-wrapper">
+        <div class="container nosearchdata"
+             v-bind:class="{'d-none': hide_nosearchdata, '': !hide_nosearchdata}">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>Perform a search using the search box above.</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container searchdata"
+             v-bind:class="{'d-none': hide_searchdata, '': !hide_searchdata}">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="shows-tab" data-toggle="tab"
+                               href="#shows" role="tab"
+                               aria-controls="shows" aria-selected="true">Shows</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="people-tab" data-toggle="tab" href="#people"
+                               role="tab"
+                               aria-controls="people" aria-selected="false">People</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="shows" role="tabpanel"
+                         aria-labelledby="shows-tab">
+                        <div class="container">
+                            <!-- Example row of columns -->
+                            <div class="row display-shows">
+                                <div class="col-md-3" v-for="s in shows">
+                                    <h4>{{s.show.name}}</h4>
+
+                                    <div class="image-block" :title="s.show.name">
+                                        <a href="#" v-on:click.prevent="open_detail_page(s.show.id)">
+                                            <img v-if="s.show.image != null"
+                                                 :src="s.show.image.medium"
+                                                 :alt="s.show.name"/>
+                                            <img v-else src="assets/img/no-image.jpeg"/>
+                                        </a>
+                                    </div>
+
+                                    <div class="summary" v-html="s.show.summary">
+                                        {{s.show.summary}}
+                                    </div>
+                                    <div class="info">
+                                        <div>
+                                            <p>Language: <span class="text-danger language">{{s.show.language}}</span>
+                                            </p>
+                                        </div>
+
+                                        <div>
+                                            <p v-if="s.show.genres.length>0">Genres: <span
+                                                    class="text-success genres"
+                                                    v-for="genre in s.show.genres">{{genre}}</span>
+                                            </p>
+
+                                            <p v-else>Genres: N/A</p>
+                                        </div>
+                                    </div>
+                                    <p><a class="btn btn-secondary view-details" :href="s.show.url"
+                                          target="_blank"
+                                          role="button">View details &raquo;</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <!-- /container -->
+                    </div>
+                    <div class="tab-pane fade" id="people" role="tabpanel"
+                         aria-labelledby="people-tab">
+                        <div class="container">
+                            <!-- Example row of columns -->
+                            <div class="row display-people">
+                                <div class="col-md-3" v-for="p in people">
+                                    <h4>{{p.person.name}}</h4>
+
+                                    <div class="image-block" :title="p.person.name">
+                                        <a :href="p.person.url">
+                                            <img v-if="p.person.image!=null"
+                                                 :src="p.person.image.medium"
+                                                 :alt="p.person.name"/>
+                                            <img v-else src="assets/img/no-image.jpeg"/>
+                                        </a>
+                                    </div>
+                                    <p><a class="btn btn-secondary view-details"
+                                          :href="p.person.url"
+                                          target="_blank"
+                                          role="button">View details &raquo;</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <!-- /container -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="container">
+    <p>&copy; Arpit Maheshwari</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+<script src="assets/js/index.js"></script>
+</body>
+</html>
